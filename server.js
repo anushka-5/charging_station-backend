@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import userRoutes  from './routes/user_routes.js';
+import chargingPointRoutes from './routes/charging_point_routes.js';
 const app = express();
 
 // Middleware to parse JSON bodies
@@ -12,6 +13,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Use user routes
 app.use('/api/users', userRoutes);
+// Use charging point routes
+app.use('/api/charging-points', chargingPointRoutes);
 
 // Sample route
 app.get('/', (req, res) => {

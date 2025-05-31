@@ -1,5 +1,5 @@
 import JWT from "jsonwebtoken";
-import User from "../models/user_model";
+import User from "../models/user_model.js";
 
 const authMiddleware = (req, res, next) => {
     try {
@@ -25,3 +25,5 @@ const authMiddleware = (req, res, next) => {
         return res.status(403).json({ message: "Invalid token" });
     }
 }
+
+export default authMiddleware;
