@@ -24,12 +24,14 @@ export const getChargingPointById = async (req, res) => {
 
 export const createChargingPoint = async (req, res) => {
     const { name, location, status } = req.body;
+    console.log(req.body)
     const newChargingPoint = new ChargingPoint({ name, location, status });
 
     try {
         const savedChargingPoint = await newChargingPoint.save();
         res.status(201).json(savedChargingPoint);
     } catch (error) {
+        console.log(error.message)
         res.status(400).json({ message: error.message });
     }
 }

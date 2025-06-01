@@ -4,6 +4,7 @@ import User from '../models/user_model.js'; // Import the User model
 
 const createUser = async (req, res) => {
     try {
+        console.log("Sign-up request received");
         // Simulate user creation logic
         const {username, email, password} = req.body; // Assume user data is sent in the request body
      
@@ -14,8 +15,10 @@ const createUser = async (req, res) => {
         // Here you would typically save the user to a database
         const result = await User.create({ username, email, password });
 
+        // Generate JWT token
+        const token = JWT.sign({ id: result._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        res.status(201).json({ message: 'User created successfully', result});
+        res.status(201).json({ message: 'User created successfully', token});
     } catch (error) {
         res.status(500).json({ message: 'Error creating user', error: error.message });
     }
