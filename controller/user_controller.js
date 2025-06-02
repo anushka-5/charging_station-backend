@@ -29,7 +29,7 @@ const createUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
-
+        console.log("Login request received");
         if (!email || !password) {
             return res.status(400).json({ message: 'Email and password are required' });
         }
@@ -53,6 +53,7 @@ const loginUser = async (req, res) => {
 
         res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
+        console.log(error.message)
         res.status(500).json({ message: 'Error logging in', error: error.message });
     }
 }
