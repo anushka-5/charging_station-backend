@@ -1,18 +1,31 @@
-import mongoose from "mongoose";
+import mongoose, { connect } from "mongoose";
 
 const chargingPointSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
     },
-    location: {
-        type: String,
+    latitude: {
+        type: Number,
+        required: true,
+    },
+    longitude: {
+        type: Number,
         required: true,
     },
     status: {
         type: String,
         enum: ['available', 'occupied', 'out_of_service'],
         default: 'available',
+    },
+    powerOutput: {
+        type: Number,
+        required: true, 
+    },
+    connectorType: {
+        type: String,
+     
+        required: true,
     },
     createdAt: {
         type: Date,

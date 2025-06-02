@@ -7,7 +7,7 @@ export const getChargingPoints = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-}
+};
 
 export const getChargingPointById = async (req, res) => {
     const { id } = req.params;
@@ -20,30 +20,30 @@ export const getChargingPointById = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-}
+};
 
 export const createChargingPoint = async (req, res) => {
-    const { name, location, status } = req.body;
-    console.log(req.body)
-    const newChargingPoint = new ChargingPoint({ name, location, status });
+    const { name, latitude, longitude, status, powerOutput, connectorType } = req.body;
+    console.log(req.body);
+    const newChargingPoint = new ChargingPoint({ name, latitude, longitude, status, powerOutput, connectorType });
 
     try {
         const savedChargingPoint = await newChargingPoint.save();
         res.status(201).json(savedChargingPoint);
     } catch (error) {
-        console.log(error.message)
+        console.log(error.message);
         res.status(400).json({ message: error.message });
     }
-}
+};
 
 export const updateChargingPoint = async (req, res) => {
     const { id } = req.params;
-    const { name, location, status } = req.body;
+    const { name, latitude, longitude, status, powerOutput, connectorType } = req.body;
 
     try {
         const updatedChargingPoint = await ChargingPoint.findByIdAndUpdate(
             id,
-            { name, location, status },
+            { name, latitude, longitude, status, powerOutput, connectorType },
             { new: true, runValidators: true }
         );
 
@@ -55,7 +55,7 @@ export const updateChargingPoint = async (req, res) => {
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
-}
+};
 
 export const deleteChargingPoint = async (req, res) => {
     const { id } = req.params;
@@ -69,7 +69,7 @@ export const deleteChargingPoint = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-}
+};
 
 const ChargingPointController = {
     getChargingPoints,
