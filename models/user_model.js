@@ -19,6 +19,10 @@ const Schema = mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    chargingPoints: [{ // 🔗 One-to-many reference
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ChargingPoint",
+    }],
 })
 
 Schema.pre("save", function (next) {

@@ -2,7 +2,9 @@ import ChargingPoint from "../models/charging_point_model.js";
 
 export const getChargingPoints = async (req, res) => {
     try {
-        const chargingPoints = await ChargingPoint.find();
+        const userId = req.user._id;
+        const chargingPoints = await ChargingPoint.find({ user: userId });
+        
         res.status(200).json(chargingPoints);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -24,14 +26,30 @@ export const getChargingPointById = async (req, res) => {
 
 export const createChargingPoint = async (req, res) => {
     const { name, latitude, longitude, status, powerOutput, connectorType } = req.body;
-    console.log(req.body);
-    const newChargingPoint = new ChargingPoint({ name, latitude, longitude, status, powerOutput, connectorType });
+    const userId = req.user._id;
+
+    console.log("Received createChargingPoint request:");
+    console.log("Request body:", req.body);
+    console.log("User ID:", userId);
 
     try {
+        const newChargingPoint = new ChargingPoint({
+            name,
+            latitude,
+            longitude,
+            status,
+            powerOutput,
+            connectorType,
+            user: userId, // Associate with the user
+        });
+
         const savedChargingPoint = await newChargingPoint.save();
+
+        console.log("Charging point saved successfully:", savedChargingPoint);
+
         res.status(201).json(savedChargingPoint);
     } catch (error) {
-        console.log(error.message);
+        console.error("Error creating charging point:", error.message);
         res.status(400).json({ message: error.message });
     }
 };
@@ -71,12 +89,42 @@ export const deleteChargingPoint = async (req, res) => {
     }
 };
 
+export const getFilteredChargingPoints = async (req, res) => {
+    try {
+        const userId = req.user._id;
+
+        const { status, powerOutput, connectorType } = req.query;
+
+        const filter = { user: userId };
+
+        if (status) {
+            filter.status = status;
+        }
+
+        if (powerOutput) {
+            // Convert to number for proper matching
+            filter.powerOutput = Number(powerOutput);
+        }
+
+        if (connectorType) {
+            filter.connectorType = connectorType;
+        }
+
+        const chargingPoints = await ChargingPoint.find(filter);
+
+        res.status(200).json(chargingPoints);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 const ChargingPointController = {
     getChargingPoints,
     getChargingPointById,
     createChargingPoint,
     updateChargingPoint,
-    deleteChargingPoint
+    deleteChargingPoint,
+    getFilteredChargingPoints
 };
 
 export default ChargingPointController;

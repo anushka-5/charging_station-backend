@@ -31,6 +31,11 @@ const chargingPointSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    user: { // 🔗 Belongs to User
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
 });
 
 const ChargingPoint = mongoose.model("ChargingPoint", chargingPointSchema);

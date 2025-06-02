@@ -6,6 +6,7 @@ const router = express.Router();
 // Define routes for charging points
 
 router.get("/", authMiddleware, ChargingPointController.getChargingPoints);
+router.get("/filter", authMiddleware, ChargingPointController.getFilteredChargingPoints);
 router.get("/:id", authMiddleware, ChargingPointController.getChargingPointById);
 router.post("/", authMiddleware, ChargingPointController.createChargingPoint);
 router.put("/:id", authMiddleware, ChargingPointController.updateChargingPoint);
